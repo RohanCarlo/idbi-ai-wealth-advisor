@@ -1,0 +1,38 @@
+package com.idbi.wealthadvisor.repository;
+
+import com.idbi.wealthadvisor.entity.Transaction;
+import com.idbi.wealthadvisor.entity.TransactionType;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
+
+public interface TransactionRepository extends JpaRepository<Transaction, UUID> {
+
+    Page<Transaction> findByAccountIdOrderByTransactionDateDesc(UUID accountId, Pageable pageable);
+
+    @Query("SELECT t FROM Transaction t WHERE t.account.user.id = :userId ORDER BY t.transactionDate DESC")
+    Page<Transaction> findByUserId(@Param("userId") UUID userId, Pageable pageable);
+
+    @Query("SELECT t FROM Transaction t WHERE t.account.user.id = :userId " +
+           "AND t.transactionDate BETWEEN :from AND :to ORDER BY t.transactionDate DESC")
+    List<Transaction> findByUserIdAndDateRange(
+        @Param("userId") UUID userId,
+        @Param("from") LocalDateTime from,
+        @Param("to") LocalDateTime to
+    );
+
+    @Query("SELECT t FROM Transaction t WHERE t.account.user.id = :userId " +
+           "AND t.type = :type AND t.transactionDate BETWEEN :from AND :to")
+    List<Transaction> findByUserIdAndTypeAndDateRange(
+        @Param("userId") UUID userId,
+        @Param("type") TransactionType type,
+        @Param("from") LocalDateTime from,
+        @Param("to") LocalDateTime to
+    );
+}

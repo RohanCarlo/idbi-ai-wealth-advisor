@@ -1,0 +1,37 @@
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Java / Maven
+backend/target/
+backend/.mvn/
+backend/*.jar
+*.class
+
+# Python
+ai-service/__pycache__/
+ai-service/.venv/
+ai-service/venv/
+ai-service/*.pyc
+ai-service/.pytest_cache/
+
+# Node / Next.js
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/.env.local
+
+# Docker
+.dockerignore
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.iws
+
+# OS
+.DS_Store
+Thumbs.db
+.claude/
